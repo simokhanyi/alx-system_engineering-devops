@@ -1,2 +1,2 @@
 #!/bin/bash
-alias dir | alias del
+ls -a | rm -i
