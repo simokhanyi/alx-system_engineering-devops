@@ -1,0 +1,10 @@
+#!/usr/bin/env bash
+#This script hat displays the PID, along with the process name
+
+for pid in /proc/*/cmdline; do
+	process_name=$(tr -d '\0' < "$pid")
+	if grep -q "bash" <<< "$process_name"; then
+		pid=$(basename "$(dirname "$pid")")
+		echo "$pid bash"
+	fi
+done

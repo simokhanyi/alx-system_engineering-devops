@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+#Script tha find the process ID (PID) of 4-to_infinity_and_beyond
+
+pid=$(pgrep -f "4-to_infinity_and_beyond")
+if [ -n "$pid" ]; then
+	# If the process exists, kill it
+	kill "$pid"
+	echo "Process terminated"
+else
+	echo "No matching process found"
+fi
