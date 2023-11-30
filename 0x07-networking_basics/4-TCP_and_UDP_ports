@@ -1,0 +1,17 @@
+#!/bin/bash
+#script that displays listening ports
+
+# Display listening ports along with program name and PID
+sudo netstat -tuln | awk 'NR > 2 {print $1, $4, $7}' | while read -r protocol local_address pid_program; do
+    # Filter only listening ports
+    if [[ "$pid_program" == *"LISTEN"* ]]; then
+        # Extract PID and program name
+        pid=$(echo "$pid_program" | awk -F'/' '{print $1}')
+
+        # Resolve program name from PID
+        program_name=$(ps -p "$pid" -o comm=)
+
+        # Display information
+        echo "$protocol $local_address $program_name [$pid]"
+    fi
+done

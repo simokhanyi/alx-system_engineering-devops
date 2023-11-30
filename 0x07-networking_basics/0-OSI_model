@@ -1,0 +1,13 @@
+What is the OSI model?
+
+The OSI model is a conceptual model that characterizes the communication 
+functions of a telecommunication system without regard to their 
+underlying internal structure and technology.
+
+How is the OSI model organized?
+
+The OSI model is organized from the lowest to the highest level. 
+It segments the communication process into seven layers, 
+each with its designated functions and responsibilities, 
+from the physical transmission level (Layer 1) 
+to the application-specific communication level (Layer 7).
