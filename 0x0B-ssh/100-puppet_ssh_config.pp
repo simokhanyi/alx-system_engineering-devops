@@ -1,5 +1,4 @@
 # Puppet script to create ssh config file
-
 file { '/root/.ssh/config':
   ensure  => present,
   content => '
