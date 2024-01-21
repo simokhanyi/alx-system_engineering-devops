@@ -1,8 +1,3 @@
 #!/usr/bin/env bash
 # Bash script that uses ssh to connect to my server using the private
-private_key="~/.ssh/school"
-user="ubuntu"
-server="34.203.75.160"
-
-# Connect to the server using ssh
-ssh -i "$private_key" "$user@$server"
+ssh ubuntu@34.203.75.160 -i ~/.ssh/school
