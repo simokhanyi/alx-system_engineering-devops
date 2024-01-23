@@ -1,8 +1,8 @@
 #!/usr/bin/env bash
 #Commands used to fix buggs on holbertonschool website
-#docker run -p 8080:80 -d -it holbertonschool/265-0
-#docker exec -it 060940f504c9 /bin/bash
-#vi /etc/apache2/sites-available/000-default.conf
+docker run -p 8080:80 -d -it holbertonschool/265-0
+docker exec -it 060940f504c9 /bin/bash
+vi /etc/apache2/sites-available/000-default.conf
 
 cat <<EOL > /etc/apache2/sites-available/000-default.conf
 <VirtualHost *:80>
@@ -21,6 +21,6 @@ cat <<EOL > /etc/apache2/sites-available/000-default.conf
 </VirtualHost>
 EOL
 
-#echo "Hello Holberton" > /var/www/html/index.html
-#service apache2 restart
-#curl 0:8080
+echo "Hello Holberton" > /var/www/html/index.html
+service apache2 restart
+curl 0:8080
