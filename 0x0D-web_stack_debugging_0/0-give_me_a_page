@@ -1,0 +1,26 @@
+#!/usr/bin/env bash
+#Commands used to fix buggs on holbertonschool website
+#docker run -p 8080:80 -d -it holbertonschool/265-0
+#docker exec -it 060940f504c9 /bin/bash
+#vi /etc/apache2/sites-available/000-default.conf
+
+cat <<EOL > /etc/apache2/sites-available/000-default.conf
+<VirtualHost *:80>
+    ServerAdmin webmaster@localhost
+    DocumentRoot /var/www/html
+
+    <Directory /var/www/html>
+        Options Indexes FollowSymLinks MultiViews
+        AllowOverride None
+        Order allow,deny
+        allow from all
+    </Directory>
+
+    ErrorLog ${APACHE_LOG_DIR}/error.log
+    CustomLog ${APACHE_LOG_DIR}/access.log combined
+</VirtualHost>
+EOL
+
+#echo "Hello Holberton" > /var/www/html/index.html
+#service apache2 restart
+#curl 0:8080
