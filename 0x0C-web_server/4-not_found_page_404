@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+# Configure your Nginx server to have a custom 404 page that contains the string Ceci n'est pas une page
+if ! command -v nginx &> /dev/null; then
+    echo "Nginx is not installed. Please run 1-install_nginx_web_server first."
+    exit 1
+fi
+
+# Create a backup of the default Nginx configuration file
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+
+# Use sed to modify the Nginx configuration for custom 404 page
+sudo sed -i '/server_name _;/a \\n\terror_page 404 /404.html;\n\tlocation = /404.html {\n\t\troot /usr/share/nginx/html;\n\t\tinternal;\n\t}\n' /etc/nginx/sites-available/default
+
+# Create the custom 404 page
+echo 'Ceci n'"'"'est pas une page' | sudo tee /usr/share/nginx/html/404.html > /dev/null
+
+# Reload Nginx to apply the changes
+sudo /etc/init.d/nginx reload
+
+echo "Nginx configured with a custom 404 page. Test with: curl -sI <your_server_ip>/nonexistent_page and curl <your_server_ip>/nonexistent_page"

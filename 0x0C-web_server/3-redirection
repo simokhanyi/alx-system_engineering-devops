@@ -1,0 +1,17 @@
+#!/usr/bin/env bash
+# Configure your Nginx server so that /redirect_me is redirecting to another page
+if ! command -v nginx &> /dev/null; then
+    echo "Nginx is not installed. Please run 1-install_nginx_web_server first."
+    exit 1
+fi
+
+# Create a backup of the default Nginx configuration file
+sudo cp /etc/nginx/sites-available/default /etc/nginx/sites-available/default.backup
+
+# Use sed to modify the Nginx configuration for redirection
+sudo sed -i '/server_name _;/a \\n\tlocation /redirect_me/ {\n\t\treturn 301 https://www.youtube.com/watch?v=QH2-TGUlwu4;\n\t}\n' /etc/nginx/sites-available/default
+
+# Reload Nginx to apply the changes
+sudo /etc/init.d/nginx reload
+
+echo "Nginx configured for redirection. Test with: curl -sI <your_server_ip>/redirect_me/"

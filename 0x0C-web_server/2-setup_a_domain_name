@@ -1,0 +1,20 @@
+#!/usr/bin/env bash
+#Domain set-up
+simokhayi.tech
+# My domain is simokhanyi.tech and your web-01 IP is 34.203.75.160
+dig_output=$(dig simokhanyi.tech)
+echo "$dig_output"
+global options: +cmd
+# shellcheck disable=SC1089
+# Got answer:
+# shellcheck disable=SC1089
+# ;; ->>HEADER<<- opcode: QUERY, status: NOERROR, id: 26785
+# ;; flags: qr rd ra; QUERY: 1, ANSWER: 1, AUTHORITY: 0, ADDITIONAL: 1
+
+# ;; OPT PSEUDOSECTION:
+# ; EDNS: version: 0, flags:; udp: 512
+# ;; QUESTION SECTION:
+# ;simokhanyi.tech.       IN  A
+
+# ;; ANSWER SECTION:
+simokhanyi.tech.      7199    IN  A   34.203.75.160
