@@ -6,7 +6,7 @@ sudo apt-get install -y nginx
 
 # Set variables
 nginx_conf="/etc/nginx/sites-available/default"
-hostname=$(34.203.75.160)
+hostname=$(hostname)
 
 # Configure custom Nginx response header
 echo "server {
@@ -15,7 +15,7 @@ echo "server {
 
     server_name _;
 
-    add_header X-Served-By $(34.234.201.138);
+    add_header X-Served-By $hostname;
 
     location / {
         root /var/www/html;
