@@ -1,0 +1,30 @@
+#!/usr/bin/env bash
+#srcipt that copies web server 1 to web server 2 for load balancing
+# Install Nginx
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Set variables
+nginx_conf="/etc/nginx/sites-available/default"
+hostname=$(34.203.75.160)
+
+# Configure custom Nginx response header
+echo "server {
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    server_name _;
+
+    add_header X-Served-By $(34.234.201.138);
+
+    location / {
+        root /var/www/html;
+        index index.html index.htm;
+    }
+}" | sudo tee "$nginx_conf" > /dev/null
+
+# Reload Nginx to apply changes
+sudo systemctl reload nginx
+
+# Display success message
+echo "Nginx configured with custom header on $hostname"
