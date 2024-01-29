@@ -1,0 +1,60 @@
+#!/usr/bin/env bash
+#install and configure HAproxy on your lb-01 server.
+
+# Update the system
+sudo apt-get update
+sudo apt-get upgrade -y
+
+# Install HAProxy
+sudo apt-get install -y haproxy
+
+# Configure HAProxy
+sudo cat <<EOL > /etc/haproxy/haproxy.cfg
+global
+    log /dev/log local0
+    log /dev/log local1 notice
+    chroot /var/lib/haproxy
+    stats socket /run/haproxy/admin.sock mode 660 level admin expose-fd listeners
+    stats timeout 30s
+    user haproxy
+    group haproxy
+    daemon
+
+defaults
+    log global
+    mode http
+    option httplog
+    option dontlognull
+    timeout connect 5000
+    timeout client 50000
+    timeout server 50000
+
+frontend main
+    bind *:80
+    default_backend app
+
+backend app
+    balance roundrobin
+    server web-01 489184-web-01:80 check
+    server web-02 489184-web-02:80 check
+EOL
+
+# Enable HAProxy init script
+sudo systemctl enable haproxy
+sudo systemctl start haproxy
+
+# Ensure proper hostnames for web servers
+sudo hostnamectl set-hostname 489184-web-01
+echo "34.203.75.160 489184-web-01" | sudo tee -a /etc/hosts
+
+sudo hostnamectl set-hostname 489184-web-02
+echo "34.234.201.138 489184-web-02" | sudo tee -a /etc/hosts
+
+# Restart networking for hostname changes to take effect
+sudo systemctl restart systemd-networkd
+
+# Verify HAProxy configuration
+sudo haproxy -c -f /etc/haproxy/haproxy.cfg
+
+# Restart HAProxy to apply changes
+sudo systemctl restart haproxy
