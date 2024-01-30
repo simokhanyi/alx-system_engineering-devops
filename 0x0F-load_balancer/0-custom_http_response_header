@@ -1,0 +1,33 @@
+#!/usr/bin/env bash
+# Customizing a 404 error page in Nginx
+
+set -e  # Exit immediately if a command exits with a non-zero status
+
+# Update Packages before performing installations
+sudo apt-get update
+sudo apt-get install -y nginx
+
+# Create an index.html page
+echo "Hello World!" | sudo tee /var/www/html/index.html
+
+# Perform a "moved permanently redirection" (301)
+nginx_config="/etc/nginx/sites-enabled/default"
+new_string="server_name _;\n\trewrite ^\/redirect_me https:\/\/github.com\/besthor permanent;"
+sudo sed -i "s/server_name _;/$new_string/" "$nginx_config"
+
+# Create a 404 Custom error page
+echo "Page not found" | sudo tee /var/www/html/404.html
+new_string="listen 80 default_server;\n\terror_page 404 \/404.html;\n\tlocation = \/404.html {\n\t\troot \/var\/www\/html;\n\t\tinternal;\n\t}"
+sudo sed -i "s/listen 80 default_server;/$new_string/" "$nginx_config"
+
+# Create an HTTP response header
+new_header="add_header X-Served-By $HOSTNAME;"
+sudo sed -i "/server_name _/a $new_header" "$nginx_config"
+
+# Test configurations for syntax errors
+sudo nginx -t
+
+# Restart nginx after implementing changes
+sudo systemctl restart nginx
+
+echo "Nginx configuration updated successfully!"
