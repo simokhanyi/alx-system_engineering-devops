@@ -4,7 +4,7 @@ sudo apt-get update
 sudo apt-get install -y nginx
 
 # Create a default HTML page with "Hello World!"
-echo "<html><head><title>Hello World!</title></head><body><p>Hello World!</p></body></html>" | sudo tee /var/www/html/index.html
+echo 'Hello World!' > /var/www/html/index.html
 
 # Start Nginx (without using systemctl)
 sudo /etc/init.d/nginx start
