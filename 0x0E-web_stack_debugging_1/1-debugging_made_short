@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+#Bash script to keep the code short and sweet
+apt-get update
+apt-get install -y nginx
+echo -e "server {\n\tlisten 80;\n\tserver_name _;\n\tlocation / {\n\t\troot /var/www/html;\n\t\tindex index.html;\n\t}\n}" > /etc/nginx/sites-available/default
+service nginx start
