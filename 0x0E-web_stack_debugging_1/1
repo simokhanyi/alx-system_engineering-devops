@@ -1,0 +1,18 @@
+Hit:1 http://archive.ubuntu.com/ubuntu focal InRelease
+Hit:2 http://archive.ubuntu.com/ubuntu focal-updates InRelease
+Hit:3 http://archive.ubuntu.com/ubuntu focal-backports InRelease
+Hit:4 http://security.ubuntu.com/ubuntu focal-security InRelease
+Hit:5 http://ppa.launchpad.net/brightbox/ruby-ng/ubuntu focal InRelease
+Hit:6 https://download.docker.com/linux/ubuntu focal InRelease
+Reading package lists...
+Reading package lists...
+Building dependency tree...
+Reading state information...
+nginx is already the newest version (1.18.0-0ubuntu1.4).
+0 upgraded, 0 newly installed, 0 to remove and 11 not upgraded.
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+System has not been booted with systemd as init system (PID 1). Can't operate.
+Failed to connect to bus: Host is down
+Nginx is now configured to listen on port 80 for the following IPv4 addresses:
+172.17.0.25
