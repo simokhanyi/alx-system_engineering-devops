@@ -1,42 +1,26 @@
-# Install Nginx package
+# Install NginX
+# With puppet
+
+exec { 'apt-get-update':
+  command => '/usr/bin/apt-get update',
+}
+
 package { 'nginx':
-  ensure => installed,
+  ensure  => installed,
+  require => Exec['apt-get-update'],
 }
 
-# Ensure Nginx service is running and enabled
-service { 'nginx':
-  ensure => running,
-  enable => true,
-}
-
-# Configure Nginx server block
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => template('nginx_config/nginx.conf.erb'),
-  require => Package['nginx'],
-  notify  => Service['nginx'],
-}
-
-# Enable the redirect configuration
-file { '/etc/nginx/sites-available/redirect_me':
-  ensure  => link,
-  target  => '/etc/nginx/sites-available/default',
-  require => Package['nginx'],
-  notify  => Service['nginx'],
-}
-
-# Custom Nginx configuration template
-file { '/etc/nginx/sites-available/default':
-  ensure  => file,
-  content => template('nginx_config/nginx_default.erb'),
-  require => Package['nginx'],
-  notify  => Service['nginx'],
-}
-
-# Hello World HTML page
-file { '/usr/share/nginx/html/index.html':
-  ensure  => file,
+file { '/var/www/html/index.html':
   content => 'Hello World!',
   require => Package['nginx'],
-  notify  => Service['nginx'],
+}
+
+exec {'redirect_me':
+  command  => 'sed -i "24i\	rewrite ^/redirect_me https://www.youtube.com/watch?v=QH2-TGUlwu4 permanent;" /etc/nginx/sites-available/default',
+  provider => 'shell'
+}
+
+service { 'nginx':
+  ensure  => running,
+  require => Package['nginx'],
 }

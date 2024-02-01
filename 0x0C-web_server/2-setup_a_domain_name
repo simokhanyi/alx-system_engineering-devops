@@ -1,10 +1,13 @@
 #!/usr/bin/env bash
 #Domain set-up
-simokhayi.tech
 # My domain is simokhanyi.tech and your web-01 IP is 34.203.75.160
-dig_output=$(dig simokhanyi.tech)
+
+# Use dig to query the domain name
+dig_output=$(dig simokhanyi.tech +short)
+
+# Print the dig output
 echo "$dig_output"
-global options: +cmd
+
 # shellcheck disable=SC1089
 # Got answer:
 # shellcheck disable=SC1089
@@ -17,4 +20,4 @@ global options: +cmd
 # ;simokhanyi.tech.       IN  A
 
 # ;; ANSWER SECTION:
-simokhanyi.tech      7199    IN  A   34.203.75.160
+#simokhanyi.tech 7199    IN  A   34.203.75.160
