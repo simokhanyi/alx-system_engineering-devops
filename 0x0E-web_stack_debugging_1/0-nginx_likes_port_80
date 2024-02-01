@@ -1,0 +1,37 @@
+#!/usr/bin/env bash
+#Bash script that configures a server to Nginx, and listening on port 80
+# Install necessary packages (if not already installed)
+apt-get update
+apt-get install -y nginx
+
+# Ensure Nginx is started
+systemctl start nginx
+
+# Get the active IPv4 addresses
+ipv4_addresses=$(ip -4 addr show scope global | grep inet | awk '{print $2}' | cut -d'/' -f1)
+
+# Configure Nginx to listen on port 80 for all active IPv4 addresses
+cat <<EOF > /etc/nginx/sites-available/default
+server {
+    listen 80;
+    server_name _;
+
+    location / {
+        root /var/www/html;
+        index index.html;
+    }
+}
+EOF
+
+# Create the root directory if it doesn't exist
+mkdir -p /var/www/html
+
+# Create a default index.html if it doesn't exist
+echo "<html><body><h1>Welcome to nginx!</h1></body></html>" > /var/www/html/index.html
+
+# Restart Nginx to apply changes
+systemctl restart nginx
+
+# Output success message
+echo "Nginx is now configured to listen on port 80 for the following IPv4 addresses:"
+echo "$ipv4_addresses"
