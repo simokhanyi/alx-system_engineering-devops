@@ -1,0 +1,38 @@
+#!/usr/bin/env bash
+#script to configure web domain
+# Function to display information about a subdomain
+display_info() {
+  local subdomain="$1"
+  local domain="$2"
+  local record_type="$3"
+  local destination="$4"
+  echo "The subdomain $subdomain is a $record_type record and points to $destination"
+}
+
+# Function to get information about a subdomain
+get_subdomain_info() {
+  local subdomain="$1"
+  local domain="$2"
+  local record_type
+  local destination
+  
+  record_type=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ {getline; getline; print $4}')
+  destination=$(dig "$subdomain.$domain" | awk '/ANSWER SECTION/ {getline; getline; print $5}')
+  
+  display_info "$subdomain" "$domain" "$record_type" "$destination"
+}
+
+# Main script
+if [ $# -eq 1 ]; then
+  # Display information for default subdomains
+  get_subdomain_info "www" "$1"
+  get_subdomain_info "lb-01" "$1"
+  get_subdomain_info "web-01" "$1"
+  get_subdomain_info "web-02" "$1"
+elif [ $# -eq 2 ]; then
+  # Display information for the specified subdomain
+  get_subdomain_info "$2" "$1"
+else
+  echo "Usage: $0 <domain> [subdomain]"
+  exit 1
+fi
