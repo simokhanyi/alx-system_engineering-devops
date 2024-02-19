@@ -1,23 +1,13 @@
 #!/usr/bin/python3
-"""
-Script to export data in the CSV format
-"""
-
-import requests
-import sys
-import csv
+"""Exports data in the CSV format"""
 
 
-def fetch_employee_todo_progress(employee_id):
-    """
-    Fetches employee's TODO list from a REST API and exports it to a CSV file.
+if __name__ == "__main__":
+    import csv
+    import requests
+    import sys
 
-    Args:
-    - employee_id (int): The ID of the employee whose TODO list is fetched.
-
-    Returns:
-    - None
-    """
+    employee_id = sys.argv[1]
     base_url = 'https://jsonplaceholder.typicode.com'
     user_url = f'{base_url}/users/{employee_id}'
     todos_url = f'{base_url}/todos?userId={employee_id}'
@@ -26,16 +16,16 @@ def fetch_employee_todo_progress(employee_id):
     user_response = requests.get(user_url)
     if user_response.status_code != 200:
         print(f"Failed to fetch user data for employee ID {employee_id}")
-        return
+        sys.exit(1)
 
     user_data = user_response.json()
-    username = user_data.get('username')
+    employee_name = user_data.get('name')  # Using .get() method
 
     # Fetching todos
     todos_response = requests.get(todos_url)
     if todos_response.status_code != 200:
         print(f"Failed to fetch TODO list for employee ID {employee_id}")
-        return
+        sys.exit(1)
 
     todos_data = todos_response.json()
 
@@ -47,17 +37,8 @@ def fetch_employee_todo_progress(employee_id):
                          "TASK_TITLE"])
 
         for todo in todos_data:
-            task_completed_status = "True" if todo['completed'] else "False"
-            writer.writerow([employee_id, username,
-                             task_completed_status, todo['title']])
-
-    print(f"CSV file {csv_file_name} created successfully!")
-
-
-if __name__ == "__main__":
-    if len(sys.argv) != 2:
-        print("Usage: python script_name.py employee_id")
-        sys.exit(1)
-
-    employee_id = int(sys.argv[1])
-    fetch_employee_todo_progress(employee_id)
+            task_completed_status = (
+                "True" if todo.get('completed') else "False"
+            )
+            writer.writerow([employee_id, employee_name, task_completed_status,
+                             todo.get('title')])
