@@ -1,6 +1,6 @@
 #!/usr/bin/python3
 """
-return information about TODO list of an employee
+Checks student output for returning info from REST API
 """
 
 import requests
@@ -8,15 +8,6 @@ import sys
 
 
 def fetch_employee_todo_progress(employee_id):
-    """
-    Fetches employee's TODO list progress from a REST API and displays it.
-
-    Args:
-    - employee_id (int): The ID of employee whose progress needs to be fetched.
-
-    Returns:
-    - None
-    """
     base_url = 'https://jsonplaceholder.typicode.com'
     user_url = f'{base_url}/users/{employee_id}'
     todos_url = f'{base_url}/todos?userId={employee_id}'
@@ -28,7 +19,7 @@ def fetch_employee_todo_progress(employee_id):
         return
 
     user_data = user_response.json()
-    employee_name = user_data.get('name')  # Using .get() method
+    employee_name = user_data.get('name')
 
     # Fetching todos
     todos_response = requests.get(todos_url)
@@ -44,11 +35,10 @@ def fetch_employee_todo_progress(employee_id):
     completed_count = len(completed_tasks)
 
     # Displaying progress
-    if employee_name:  # Check if employee_name is not None
+    if employee_name:
         print(
-            "Employee {} is done with tasks ({}/{})".format(
-                employee_name, completed_count, total_tasks
-            )
+            f"Employee {employee_name} is done with tasks"
+            f"({completed_count}/{total_tasks}):"
         )
         for task in completed_tasks:
             print(f"\t{task['title']}")
