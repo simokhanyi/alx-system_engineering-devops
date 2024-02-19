@@ -31,7 +31,7 @@ def fetch_employee_todo_progress(employee_id):
         return
 
     user_data = user_response.json()
-    employee_name = user_data.get('username')  # Using .get() method
+    employee_name = user_data.get('username')
 
     # Fetching todos
     todos_response = requests.get(todos_url)
