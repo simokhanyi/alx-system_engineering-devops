@@ -1,5 +1,7 @@
 #!/usr/bin/python3
-""" return information about TODO list progress for a given employee ID """
+"""
+Script to return information about TODO list progress for a given employee ID
+"""
 
 import requests
 import sys
