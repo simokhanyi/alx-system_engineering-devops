@@ -4,9 +4,9 @@ script to export data in the JSON format and records
 all tasks that are owned by this employee
 """
 
-import sys
-import requests
 import json
+import requests
+import sys
 
 
 def fetch_employee_todo_progress(employee_id):

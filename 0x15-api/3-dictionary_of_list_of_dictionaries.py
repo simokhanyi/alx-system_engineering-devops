@@ -4,8 +4,8 @@ script to export data in the JSON format and records
 all tasks from all employees
 """
 
-import requests
 import json
+import requests
 
 
 def fetch_all_employee_todo_progress():
