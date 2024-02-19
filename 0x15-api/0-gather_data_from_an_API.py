@@ -3,6 +3,7 @@
 Checks student output for returning info from REST API
 """
 
+
 import requests
 import sys
 
@@ -28,20 +29,16 @@ def fetch_employee_todo_progress(employee_id):
         return
 
     todos_data = todos_response.json()
-
-    # Counting completed tasks
-    completed_tasks = [todo for todo in todos_data if todo['completed']]
     total_tasks = len(todos_data)
-    completed_count = len(completed_tasks)
+    completed_count = sum(task['completed'] for task in todos_data)
 
     # Displaying progress
     if employee_name:
-        print(
-            f"Employee {employee_name} is done with tasks"
-            f"({completed_count}/{total_tasks}):"
-        )
-        for task in completed_tasks:
-            print(f"\t{task['title']}")
+        print(f"Employee {employee_name} is done with tasks"
+              f"({completed_count}/{total_tasks}):")
+        for task in todos_data:
+            if task['completed']:
+                print(f"\t{task['title']}")
     else:
         print(f"Employee with ID {employee_id} not found")
 
