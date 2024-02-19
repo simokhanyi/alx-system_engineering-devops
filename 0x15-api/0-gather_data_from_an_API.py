@@ -9,14 +9,13 @@ import sys
 
 def fetch_employee_todo_progress(employee_id):
     """
-    Fetches employee TODO list progress from a REST API and displays it.
+    Fetches employee's TODO list progress from a REST API and displays it.
 
     Args:
     - employee_id (int): The ID of employee whose progress needs to be fetched.
 
     Returns:
     - None
-
     """
     base_url = 'https://jsonplaceholder.typicode.com'
     user_url = f'{base_url}/users/{employee_id}'
