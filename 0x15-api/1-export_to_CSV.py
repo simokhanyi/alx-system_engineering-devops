@@ -10,16 +10,6 @@ import sys
 
 
 def fetch_employee_todo_progress(employee_id):
-    """
-    Fetches employee's TODO list from a REST API and exports it to a CSV file.
-
-    Args:
-    - employee_id (int): The ID of the employee whose TODO list is fetched.
-
-    Returns:
-    - None
-
-    """
     base_url = 'https://jsonplaceholder.typicode.com'
     user_url = f'{base_url}/users/{employee_id}'
     todos_url = f'{base_url}/todos?userId={employee_id}'
@@ -31,7 +21,7 @@ def fetch_employee_todo_progress(employee_id):
         return
 
     user_data = user_response.json()
-    employee_name = user_data.get('username')
+    employee_name = user_data.get('name')
 
     # Fetching todos
     todos_response = requests.get(todos_url)
@@ -41,6 +31,9 @@ def fetch_employee_todo_progress(employee_id):
 
     todos_data = todos_response.json()
 
+    # Counting completed tasks
+    completed_tasks = [todo for todo in todos_data if todo['completed']]
+
     # Writing to CSV file
     csv_file_name = f"{employee_id}.csv"
     with open(csv_file_name, mode='w', newline='') as csv_file:
@@ -48,12 +41,20 @@ def fetch_employee_todo_progress(employee_id):
         writer.writerow(["USER_ID", "USERNAME", "TASK_COMPLETED_STATUS",
                          "TASK_TITLE"])
 
-        for todo in todos_data:
-            task_completed_status = (
-                "True" if todo.get('completed') else "False"
-            )
-            writer.writerow([employee_id, employee_name,
-                             task_completed_status, todo.get('title')])
+        for task in todos_data:
+            task_completed_status = "True" if task['completed'] else "False"
+            writer.writerow([employee_id, employee_name, task_completed_status,
+                             task['title']])
+
+    # Displaying progress
+    total_tasks = len(todos_data)
+    completed_count = len(completed_tasks)
+    print(
+        f"Employee {employee_name} is done with tasks"
+        f"({completed_count}/{total_tasks}):"
+    )
+    for task in completed_tasks:
+        print(f"\t{task['title']}")
 
 
 if __name__ == "__main__":
