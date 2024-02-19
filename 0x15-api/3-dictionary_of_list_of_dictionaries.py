@@ -35,7 +35,7 @@ def fetch_all_employee_todo_progress():
     json_data = {}
     for user in users_data:
         user_id = str(user['id'])
-        username = user['username']
+        username = user.get('username')
         todos_url = f'{base_url}/todos?userId={user_id}'
         todos_response = requests.get(todos_url)
         if todos_response.status_code == 200:
@@ -44,8 +44,8 @@ def fetch_all_employee_todo_progress():
             for todo in todos_data:
                 json_data[user_id].append({
                     "username": username,
-                    "task": todo['title'],
-                    "completed": todo['completed']
+                    "task": todo.get('title'),
+                    "completed": todo.get('completed')
                 })
 
     # Writing to JSON file

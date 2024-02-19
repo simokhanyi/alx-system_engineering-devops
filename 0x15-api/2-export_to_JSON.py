@@ -31,7 +31,7 @@ def fetch_employee_todo_progress(employee_id):
         return
 
     user_data = user_response.json()
-    username = user_data['username']
+    username = user_data.get('username')
 
     # Fetching todos
     todos_response = requests.get(todos_url)
@@ -44,10 +44,11 @@ def fetch_employee_todo_progress(employee_id):
     # Constructing JSON data
     json_data = {str(employee_id): []}
     for todo in todos_data:
-        json_data[str(employee_id)].append({"task": todo['title'],
-                                            "completed": todo['completed'],
-                                            "username": username
-                                            })
+        json_data[str(employee_id)].append({
+            "task": todo.get('title'),
+            "completed": todo.get('completed'),
+            "username": username
+        })
 
     # Writing to JSON file
     json_file_name = f"{employee_id}.json"

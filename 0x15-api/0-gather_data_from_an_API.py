@@ -31,7 +31,7 @@ def fetch_employee_todo_progress(employee_id):
         return
 
     user_data = user_response.json()
-    employee_name = user_data['name']
+    employee_name = user_data.get('name')  # Using .get() method
 
     # Fetching todos
     todos_response = requests.get(todos_url)
@@ -47,13 +47,16 @@ def fetch_employee_todo_progress(employee_id):
     completed_count = len(completed_tasks)
 
     # Displaying progress
-    print(
-        "Employee {} is done with tasks ({}/{})".format(
-            employee_name, completed_count, total_tasks
+    if employee_name:  # Check if employee_name is not None
+        print(
+            "Employee {} is done with tasks ({}/{})".format(
+                employee_name, completed_count, total_tasks
+            )
         )
-    )
-    for task in completed_tasks:
-        print(f"\t{task['title']}")
+        for task in completed_tasks:
+            print(f"\t{task['title']}")
+    else:
+        print(f"Employee with ID {employee_id} not found")
 
 
 if __name__ == "__main__":

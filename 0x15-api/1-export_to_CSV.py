@@ -4,6 +4,7 @@ script to export data in the CSV format and records all tasks
 that are owned by this employee
 """
 
+
 import sys
 import requests
 import csv
@@ -31,7 +32,7 @@ def fetch_employee_todo_progress(employee_id):
         return
 
     user_data = user_response.json()
-    employee_name = user_data['username']
+    employee_name = user_data.get('username')  # Using .get() method
 
     # Fetching todos
     todos_response = requests.get(todos_url)
@@ -49,9 +50,11 @@ def fetch_employee_todo_progress(employee_id):
                          "TASK_TITLE"])
 
         for todo in todos_data:
-            task_completed_status = "True" if todo['completed'] else "False"
+            task_completed_status = (
+                "True" if todo.get('completed') else "False"
+            )
             writer.writerow([employee_id, employee_name,
-                             task_completed_status, todo['title']])
+                             task_completed_status, todo.get('title')])
 
 
 if __name__ == "__main__":
