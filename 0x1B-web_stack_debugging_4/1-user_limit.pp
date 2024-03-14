@@ -1,4 +1,4 @@
-er_limit.pp
+#1-user_limit.pp
 # Puppet manifest to adjust file limits for the holberton user
 
 # Define a file resource to update the limits.conf file
