@@ -1,12 +1,44 @@
-server {
-    listen 80;
-    server_name _;
+# Nginx configuration for serving the page from /airbnb-onepage/
 
+# Default server configuration
+server {
+    # Listen on port 80 for IPv4 and IPv6
+    listen 80 default_server;
+    listen [::]:80 default_server;
+
+    # Server name, specify your domain name or IP address here
+    server_name 34.203.75.160;
+
+    # Root directory for the web page (change this to your actual root directory)
+    root /var/www/html;
+
+    # Location configuration
     location /airbnb-onepage/ {
-        proxy_pass http://127.0.0.1:5000/;
+        # Proxy requests to the process listening on port 5000
+        proxy_pass http://localhost:5000;
+        # Upgrade headers for WebSocket connections
+        proxy_http_version 1.1;
+        proxy_set_header Upgrade $http_upgrade;
+        proxy_set_header Connection 'upgrade';
         proxy_set_header Host $host;
-        proxy_set_header X-Real-IP $remote_addr;
-        proxy_set_header X-Forwarded-For $proxy_add_x_forwarded_for;
-        proxy_set_header X-Forwarded-Proto $scheme;
+        proxy_cache_bypass $http_upgrade;
     }
+
+    # Error page configuration
+    error_page 404 /404.html;
+    location = /404.html {
+        root /usr/share/nginx/html;
+        internal;
+    }
+
+    # Error page configuration for server errors
+    error_page 500 502 503 504 /50x.html;
+    location = /50x.html {
+        root /usr/share/nginx/html;
+        internal;
+    }
+
+    # Access and error logs
+    access_log /var/log/nginx/access.log;
+    error_log /var/log/nginx/error.log;
 }
