@@ -11,3 +11,5 @@ if pgrep gunicorn > /dev/null; then
 else
     echo "Gunicorn is not running."
 fi
+
+exit 0
