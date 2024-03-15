@@ -1,21 +1,25 @@
-# Puppet class to manage Nginx configuration
+# Puppet class to manage Nginx installation and configuration
 
-class { 'nginx':
-  # Ensure Nginx service is running and enabled
-  ensure => 'running',
-  enable => true,  # Corrected parameter name to 'enable'
-}
+class nginx_traffic_increase {
 
-# Define a Puppet resource to manage Nginx configuration file
-file { '/etc/nginx/nginx.conf':
-  ensure  => file,
-  # Owner and group for the configuration file
-  owner   => 'root',
-  group   => 'root',
-  # Set appropriate permissions for the configuration file
-  mode    => '0644',
-  # Content of the Nginx configuration file
-  content => template('nginx/nginx.conf.erb'),
-  # Notify Nginx service to reload if the configuration file changes
-  notify  => Service['nginx'],
+  # Install Nginx package
+  package { 'nginx':
+    ensure => installed,
+  }
+
+  # Modify Nginx configuration for handling more traffic
+  file { '/etc/nginx/nginx.conf':
+    ensure  => present,
+    replace => true,
+    content => template('nginx/nginx.conf.erb'), # Corrected template path
+    notify  => Service['nginx'],
+    require => Package['nginx'], # Require nginx package before modifying the config
+  }
+
+  # Service definition for Nginx
+  service { 'nginx':
+    ensure  => running,
+    enable  => true,
+    require => Package['nginx'], # Require nginx package before starting the service
+  }
 }
