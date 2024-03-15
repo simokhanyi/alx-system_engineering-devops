@@ -1,8 +1,9 @@
- #Puppet class to manage Nginx configuration
+# Puppet class to manage Nginx configuration
+
 class { 'nginx':
   # Ensure Nginx service is running and enabled
-  ensure  => 'running',
-  enable  => true,  # Corrected parameter name to 'enable'
+  ensure => 'running',
+  enable => true,  # Corrected parameter name to 'enable'
 }
 
 # Define a Puppet resource to manage Nginx configuration file
